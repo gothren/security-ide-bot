@@ -1,4 +1,5 @@
 import argparse
+import os
 import string
 import sys
 import colorama
@@ -6,7 +7,7 @@ import termcolor
 import pyfiglet
 
 from bot import SecurityBot
-from utils import SecurityFinding
+from utils import SecurityFinding, write_file, append_to_file
 
 
 def main():
@@ -43,17 +44,29 @@ def main():
     interactive_shell(finding, args.output_path, sec_bot)
 
 
-def process_shell_input(user_input: string, finding: SecurityFinding, output_path: string, sec_bot: SecurityBot) -> None:
-    # Add your logic here to process the command
+def process_shell_input(
+        user_input: string,
+        finding: SecurityFinding,
+        output_path: string,
+        sec_bot: SecurityBot) -> None:
+
     user_input = user_input.strip()
     if user_input == "help":
         print_help()
     elif user_input == "exit":
         sys.exit()
+    elif user_input == "fix":
+        fix_content = sec_bot.generate_fix()
+        write_file(finding.file_path, fix_content)
+        print('Fix applied!')
+
     elif user_input == "explain":
-        sec_bot.explain_finding(finding, output_path)
+        explanation = sec_bot.explain_finding(finding)
+        write_file(output_path, explanation)
     else:
-        sec_bot.ask_question(finding, user_input, output_path)
+        chat_output = sec_bot.ask_question(finding, user_input)
+        append_to_file(output_path, f'{os.linesep} ## {user_input} {os.linesep}')
+        append_to_file(output_path, chat_output)
 
 
 def interactive_shell(finding: SecurityFinding, output_path: string, sec_bot: SecurityBot) -> None:

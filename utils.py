@@ -2,18 +2,18 @@ import os
 import string
 
 
-def read_file(file_path:string) -> string:
+def read_file(file_path: string) -> string:
     with open(file_path, mode='r', encoding='utf-8') as file:
         file_content = file.read()
         return file_content
 
 
-def write_file(file_path:string, file_content: string) -> None:
+def write_file(file_path: string, file_content: string) -> None:
     with open(file_path, 'w', encoding='utf-8') as file:
         file.write(file_content)
 
 
-def append_to_file(file_path:string, file_content: string) -> None:
+def append_to_file(file_path: string, file_content: string) -> None:
     with open(file_path, 'a', encoding='utf-8') as file:
         file.write(file_content)
         file.write(os.linesep)
