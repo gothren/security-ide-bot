@@ -23,6 +23,7 @@ def main():
         '--file-location',
         help='The location of vuln in the file, in the form function_name:line_number',
         required=True)
+    parser.add_argument('--language', help='The programming language of the vulnerable code', required=True)
     parser.add_argument(
         '--output-path',
         help='The path to the output markdown file, defaults to "markdown.md" in the current working dir',
@@ -37,9 +38,9 @@ def main():
     if len(func_and_line) != 2:
         raise Exception('Invalid file_location input. Has to be of the form function_name:line_number')
 
-    finding = SecurityFinding(cwe, file_path, func_and_line[0], int(func_and_line[1]))
+    finding = SecurityFinding(cwe, file_path, func_and_line[0], int(func_and_line[1]), args.language)
 
-    sec_bot = SecurityBot()
+    sec_bot = SecurityBot(finding)
 
     interactive_shell(finding, args.output_path, sec_bot)
 
@@ -61,10 +62,10 @@ def process_shell_input(
         print('Fix applied!')
 
     elif user_input == "explain":
-        explanation = sec_bot.explain_finding(finding)
+        explanation = sec_bot.explain_finding()
         write_file(output_path, explanation)
     else:
-        chat_output = sec_bot.ask_question(finding, user_input)
+        chat_output = sec_bot.ask_question(user_input)
         append_to_file(output_path, f'{os.linesep} ## {user_input} {os.linesep}')
         append_to_file(output_path, chat_output)
 

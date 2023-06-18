@@ -19,15 +19,25 @@ def append_to_file(file_path: string, file_content: string) -> None:
         file.write(os.linesep)
 
 
+# Replace the last occurrence of old with new in s
+def rreplace(s, old, new, occurrence):
+    li = s.rsplit(old, occurrence)
+    return new.join(li)
+
+
 class SecurityFinding:
-    def __init__(self, cwe: string, file_path: string, function_name: string, line_number: int):
+    def __init__(self, cwe: string, file_path: string, function_name: string, line_number: int, language: str):
         self.cwe = cwe
         self.file_path = file_path
         self.function_name = function_name
         self.line_number = line_number
+        self.language = language
 
     def vuln_name(self) -> string:
         if self.cwe.lower() == 'cwe-89':
             return 'Sql Injection'
+
+        if self.cwe.lower() == 'cwe-23':
+            return 'Path Traversal'
 
         raise Exception(f'Unsupported CWE {self.cwe}')
