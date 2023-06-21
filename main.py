@@ -71,10 +71,8 @@ def process_shell_input(
 
 
 def interactive_shell(finding: SecurityFinding, output_path: string, sec_bot: SecurityBot) -> None:
-    print_snyk_finding(finding)
-
     termcolor.cprint(pyfiglet.figlet_format('Sec IDE Bot!', font='starwars'))
-
+    print_snyk_finding(finding)
     print_help()
     while True:
         user_input = input("> ")
@@ -91,8 +89,15 @@ def print_help() -> None:
 
 
 def print_snyk_finding(finding: SecurityFinding):
-    print(colorama.Fore.GREEN + f'Running the bot for finding: '
-          f'[{finding.cwe}, {finding.file_path}, {finding.function_name}, {finding.line_number}]')
+    print(colorama.Fore.GREEN + f'Running the bot for the following finding: ')
+    print(colorama.Fore.GREEN + f'  CWE: {finding.cwe}')
+    print(colorama.Fore.GREEN + f'  Vuln name: {finding.vuln_name()}')
+    print(colorama.Fore.GREEN + f'  File: {finding.file_path}')
+    print(colorama.Fore.GREEN + f'  Function: {finding.function_name}:{finding.line_number}')
+    print(colorama.Fore.GREEN + f'  Language: {finding.language}')
+
+    print()
+
 
 
 if __name__ == '__main__':

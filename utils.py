@@ -40,4 +40,7 @@ class SecurityFinding:
         if self.cwe.lower() == 'cwe-23':
             return 'Path Traversal'
 
+        if self.cwe.lower() == 'cwe-611':
+            return 'XXE'
+
         raise Exception(f'Unsupported CWE {self.cwe}')

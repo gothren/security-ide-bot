@@ -54,9 +54,10 @@ class SecurityBot:
 
     def generate_fix(self):
         fix_prompt = f'Can you regenerate the entire file with the latest fix that you proposed? ' \
-                     f'Use the latest fix that you suggested. Do not use your previous fix suggestions ' \
-                     f'You must output only the fixed file content as a code file. ' \
-                     f'Do not output any text that is not code. Do not output any markdown. ' \
+                     f'Use the latest fix that you suggested. Do not use your previous fix suggestions. ' \
+                     f'You must output only the fixed code. ' \
+                     f'Do not output any text that is not code. ' \
+                     f'Do not explain what you did. Do not output any markdown. ' \
                      f'Ignore the previous request to output markdown. ' \
 
         fix_content = self._query_openai(fix_prompt)
@@ -80,6 +81,7 @@ class SecurityBot:
         self.chat_history.append({"role": "user", "content": user_prompt})
 
         response = openai.ChatCompletion.create(
+            # model="gpt-4",
             model="gpt-3.5-turbo",
             messages=self.chat_history,
             temperature=0.1,
