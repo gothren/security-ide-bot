@@ -24,6 +24,7 @@ class SecurityBot:
 
     def explain_finding(self) -> string:
         explain_prompt = f'I want you to generate a markdown file that explains the vulnerability. ' \
+                         f'Do not put ```markdown at the start of the file and ``` at the end of the file. ' \
                          f'You must title the file "{self.finding.vuln_name()} in {self.finding.function_name}". ' \
                          f'Split the output into four sections and title each section. ' \
                          f'The first section must be titled ' \
@@ -81,8 +82,8 @@ class SecurityBot:
         self.chat_history.append({"role": "user", "content": user_prompt})
 
         response = openai.ChatCompletion.create(
-            # model="gpt-4",
-            model="gpt-3.5-turbo",
+            model="gpt-4",
+            # model="gpt-3.5-turbo",
             messages=self.chat_history,
             temperature=0.1,
         )
